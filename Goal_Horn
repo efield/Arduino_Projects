@@ -1,0 +1,78 @@
+// WRITTEN BY ERIC FIELD
+
+const int lightSensor = A0;
+int lightValue = 0;
+const int pizzo = 8;
+const int redLED = 3;
+const int greenLED = 4;
+int timer = 0;
+int oldTime = 0;
+//int StateLED = LOW; FOR BLINKING GREEN LED TEST
+
+void setup()
+
+{
+  Serial.begin(9600);
+  for(int pinNum=3; pinNum<5;pinNum++)
+  {
+    pinMode(pinNum,OUTPUT);
+    digitalWrite(pinNum,LOW);
+  }
+  
+  pinMode(lightSensor,INPUT);
+  
+  pinMode(pizzo,OUTPUT);
+  
+}
+
+void loop()
+{
+  timer = millis();
+  
+  lightValue = analogRead(lightSensor);
+  
+  Serial.print(lightValue);
+  Serial.print("\n");
+  
+/*  
+BLINKING LED TEST FOR ELECTRICAL
+
+BLINKS THE GREEN LED EVERY SECOND
+
+if (timer - oldTime >= 1000)
+  {
+    oldTime = timer;
+    
+    if(StateLED == LOW)
+    {
+      StateLED = HIGH;
+    }
+    
+    else
+    StateLED = LOW;
+    
+    digitalWrite(greenLED,StateLED);
+ */   
+
+ if(timer- oldTime >= 26000)
+ {
+   oldTime = timer;
+   digitalWrite(greenLED,HIGH);
+   tone(pizzo,350);
+   delay(3000);
+   digitalWrite(greenLED,LOW);
+   noTone(pizzo);
+   delay(500);
+ }
+
+
+else if(lightValue-10 > analogRead(lightSensor))
+ {
+   digitalWrite(redLED,HIGH);
+   tone(pizzo,200);
+   delay(3000);
+   digitalWrite(redLED,LOW);
+   noTone(pizzo);
+   delay(500);
+ }
+  }
